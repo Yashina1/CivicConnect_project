@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CivicConnect Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f4c81,#3498db,#5dade2);
+padding:20px;
+}
+
+.container{
+width:95%;
+max-width:1200px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+h1{
+color:#0f4c81;
+margin-bottom:20px;
+}
+
+.stats{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:25px;
+}
+
+.stat-card{
+width:220px;
+background:#f4f8fb;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.stat-card h2{
+color:#0f4c81;
+}
+
+.categories{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:12px;
+margin:25px 0;
+}
+
+.category-card{
+background:#eef5ff;
+padding:12px 18px;
+border-radius:10px;
+font-weight:600;
+}
+
+.features{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin:25px 0;
+}
+
+.feature{
+width:220px;
+background:#f4f8fb;
+padding:15px;
+border-radius:12px;
+}
+
+.buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+max-width:500px;
+margin:auto;
+}
+
+.buttons a{
+background:#3498db;
+color:white;
+text-decoration:none;
+padding:14px;
+border-radius:10px;
+font-weight:600;
+}
+
+.buttons a:hover{
+background:#21618c;
+}
+
+.footer{
+margin-top:30px;
+color:#666;
+}
+
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:#0f4c81;
+    color:white;
+    padding:10px 20px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#3498db;
+}
+
+.container{
+    position:relative;
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back-btn">
+← Back
+</a>
+
+<h1>CivicConnect Dashboard</h1>
+
+<div class="stats">
+
+<div class="stat-card">
+<h2 id="totalComplaints">0</h2>
+<p>Total Complaints</p>
+</div>
+
+<div class="stat-card">
+<h2 id="resolvedComplaints">0</h2>
+<p>Resolved Complaints</p>
+</div>
+
+<div class="stat-card">
+<h2 id="pendingComplaints">0</h2>
+<p>Pending Complaints</p>
+</div>
+
+</div>
+
+<h2>Common Civic Issues</h2>
+
+<div class="categories">
+
+<div class="category-card">🛣️ Road Damage</div>
+<div class="category-card">🗑️ Garbage</div>
+<div class="category-card">💧 Water Leakage</div>
+<div class="category-card">🚰 Drainage</div>
+<div class="category-card">💡 Street Light</div>
+<div class="category-card">🚨 Public Safety</div>
+
+</div>
+
+<div class="features">
+
+<div class="feature">
+<h4>📢 Report Issues</h4>
+<p>Submit complaints with details and photos.</p>
+</div>
+
+<div class="feature">
+<h4>📍 Track Status</h4>
+<p>Monitor complaint progress.</p>
+</div>
+
+<div class="feature">
+<h4>🏛️ Authority Portal</h4>
+<p>Authorities resolve civic issues.</p>
+</div>
+
+</div>
+
+<div class="buttons">
+
+<a href="register.html">Citizen Registration</a>
+
+<a href="login.html">Citizen Login</a>
+
+<a href="authority.html">Authority Login</a>
+
+<a href="public.html">Public Portal</a>
+
+</div>
+
+<div class="footer">
+© 2026 CivicConnect | Smart Civic Complaint Management System
+</div>
+
+</div>
+
+<script>
+
+let complaints =
+JSON.parse(localStorage.getItem("complaints")) || [];
+
+let resolved =
+complaints.filter(c => c.status === "Resolved").length;
+
+document.getElementById("totalComplaints").innerText =
+complaints.length;
+
+document.getElementById("resolvedComplaints").innerText =
+resolved;
+
+document.getElementById("pendingComplaints").innerText =
+complaints.length - resolved;
+
+</script>
+
+</body>
+</html>

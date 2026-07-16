@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>CivicConnect - Public Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    min-height:100vh;
+}
+
+/* Back Button */
+.back{
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+
+.back button{
+    padding:10px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.back button:hover{
+    background:#2980b9;
+}
+
+/* Main Container */
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:70px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0b3d91;
+}
+
+h2{
+    text-align:center;
+    color:#666;
+    margin-top:10px;
+}
+
+.info-box{
+    background:#eef5ff;
+    padding:15px;
+    border-radius:10px;
+    margin:20px 0;
+    color:#444;
+    line-height:1.7;
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#0b3d91;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f8f9fa;
+}
+
+/* Status Styles */
+.status{
+    padding:5px 12px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.submitted{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.review{
+    background:#cce5ff;
+    color:#004085;
+}
+
+.progress{
+    background:#d1ecf1;
+    color:#0c5460;
+}
+
+.resolved{
+    background:#d4edda;
+    color:#155724;
+}
+
+.footer{
+    margin-top:25px;
+    text-align:center;
+    color:#777;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="back">
+<a href="dashboard.html">
+<button>← Back</button>
+</a>
+</div>
+
+<div class="container">
+
+<h1>🏛️ CivicConnect</h1>
+
+<h2>Public Complaint Monitoring Portal</h2>
+
+<div class="info-box">
+This portal provides transparency by displaying civic complaints
+submitted by citizens and their current status. The public can
+track how authorities are addressing community issues.
+</div>
+
+<table>
+
+<tr>
+<th>Complaint ID</th>
+<th>Title</th>
+<th>Category</th>
+<th>Location</th>
+<th>Date</th>
+<th>Status</th>
+<th>Remarks</th>
+</tr>
+
+<tbody id="complaintTable"></tbody>
+
+</table>
+
+<div class="footer">
+Digital Governance • Public Transparency System
+</div>
+
+</div>
+
+<script>
+
+let complaints =
+JSON.parse(localStorage.getItem("complaints")) || [];
+
+let table =
+document.getElementById("complaintTable");
+
+if(complaints.length > 0){
+
+    complaints.forEach(function(c){
+
+        let statusClass = "submitted";
+
+        if(c.status === "Under Review"){
+            statusClass = "review";
+        }
+        else if(c.status === "In Progress"){
+            statusClass = "progress";
+        }
+        else if(c.status === "Resolved"){
+            statusClass = "resolved";
+        }
+
+        table.innerHTML +=
+
+        "<tr>" +
+
+        "<td>" + (c.complaintId || c.id || "Not Available") + "</td>" +
+
+        "<td>" + (c.title || "-") + "</td>" +
+
+        "<td>" + (c.category || "-") + "</td>" +
+
+        "<td>" + (c.location || "-") + "</td>" +
+
+        "<td>" + (c.date || "-") + "</td>" +
+
+        "<td><span class='status " + statusClass + "'>" +
+        (c.status || "Submitted") +
+        "</span></td>" +
+
+        "<td>" + (c.remarks || "No Remarks") + "</td>" +
+
+        "</tr>";
+
+    });
+
+}
+else{
+
+    table.innerHTML =
+    "<tr><td colspan='7'>No Complaints Available</td></tr>";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CivicConnect - Authority Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    min-height:100vh;
+}
+
+/* BACK BUTTON */
+.back{
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+
+.back button{
+    padding:10px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.back button:hover{
+    background:#2980b9;
+}
+
+/* LOGIN BOX */
+.login-box{
+    width:450px;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.login-box h1{
+    color:#0b3d91;
+}
+
+.login-box h2{
+    color:#555;
+    margin:10px 0;
+}
+
+.login-box p{
+    color:#777;
+    margin-bottom:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+input:focus{
+    border-color:#0b3d91;
+    outline:none;
+}
+
+.login-btn{
+    width:100%;
+    padding:12px;
+    background:#0b3d91;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.login-btn:hover{
+    background:#072c68;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="back">
+<a href="index.html">
+<button>← Back</button>
+</a>
+</div>
+
+<!-- LOGIN SECTION -->
+<div class="login-box">
+
+<h1>🏛️ CivicConnect</h1>
+
+<h2>Government Officer Login</h2>
+
+<p>Municipal Complaint Review & Resolution System</p>
+
+<form onsubmit="loginAuthority(event)">
+
+<input type="text" id="username" placeholder="Username" required>
+
+<input type="password" id="password" placeholder="Password" required>
+
+<button type="submit" class="login-btn">Login</button>
+
+</form>
+
+</div>
+
+<script>
+
+function loginAuthority(event){
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    // DEBUG (optional)
+    console.log(username, password);
+
+    if(username === "civicconnect" && password === "123456"){
+        alert("Login Successful");
+
+        // redirect
+        window.location.href = "authority_dashboard.html";
+    }
+    else{
+        alert("Invalid Username or Password");
+    }
+}
+
+</script>
+
+</body>
+</html>

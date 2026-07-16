@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CivicConnect - My Complaints</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* BACKGROUND */
+body{
+    background:#f4f6f9;
+    min-height:100vh;
+}
+
+/* BACK BUTTON */
+.back{
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+
+.back button{
+    padding:10px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.back button:hover{
+    background:#2980b9;
+}
+
+/* HEADER */
+h1{
+    text-align:center;
+    margin-top:30px;
+    color:#0b3d91;
+}
+
+h2{
+    text-align:center;
+    color:#555;
+    margin-bottom:20px;
+}
+
+/* TABLE CONTAINER */
+.table-container{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#0b3d91;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f1f5ff;
+}
+
+/* NEW BUTTON */
+.new-btn{
+    margin-top:20px;
+    display:block;
+    width:200px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:12px;
+    background:#00b894;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
+}
+
+.new-btn:hover{
+    background:#019875;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<div class="back">
+<a href="dashboard.html">
+<button>← Back</button>
+</a>
+</div>
+
+<h1>CivicConnect</h1>
+<h2>My Previous Complaints</h2>
+
+<div class="table-container">
+
+<table>
+
+<tr>
+<th>Complaint ID</th>
+<th>Title</th>
+<th>Category</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+
+<tbody id="historyTable"></tbody>
+
+</table>
+
+</div>
+
+<a class="new-btn" href="complaint.html">
+➕ New Complaint
+</a>
+
+<script>
+
+/* Logged-in User */
+let currentUser =
+String(localStorage.getItem("currentUser") || "").trim();
+
+/* All Complaints */
+let allComplaints =
+JSON.parse(localStorage.getItem("complaints")) || [];
+
+/* Filter User Complaints */
+let complaints =
+allComplaints.filter(function(c){
+
+    return String(c.user || "").trim() === currentUser;
+
+});
+
+/* Table Body */
+let table =
+document.getElementById("historyTable");
+
+/* No Complaints */
+if(complaints.length === 0){
+
+    table.innerHTML =
+    "<tr><td colspan='5' class='empty'>No Previous Complaints Found</td></tr>";
+
+}
+
+/* Display Complaints */
+else{
+
+    complaints.forEach(function(c){
+
+        let row = document.createElement("tr");
+
+        row.innerHTML =
+
+        "<td>" + (c.complaintId || "N/A") + "</td>" +
+
+        "<td>" + (c.title || "-") + "</td>" +
+
+        "<td>" + (c.category || "-") + "</td>" +
+
+        "<td>" + (c.date || "-") + "</td>" +
+
+        "<td>" + (c.status || "Submitted") + "</td>";
+
+        table.appendChild(row);
+
+    });
+
+}
+
+</script>
+</body>
+</html>

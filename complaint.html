@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CivicConnect - Complaint Submission</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* BACKGROUND */
+body{
+    background:#f4f6f9;
+    min-height:100vh;
+}
+
+/* BACK BUTTON */
+.back{
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+
+.back button{
+    padding:10px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.back button:hover{
+    background:#2980b9;
+}
+
+/* FORM CARD */
+.container{
+    width:500px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0b3d91;
+}
+
+h3{
+    text-align:center;
+    color:#666;
+    margin-bottom:20px;
+}
+
+/* INPUTS */
+label{
+    font-weight:600;
+    font-size:14px;
+    color:#333;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:#0b3d91;
+}
+
+/* BUTTON */
+.submit-btn{
+    width:100%;
+    padding:12px;
+    background:#0b3d91;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#072c68;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BACK -->
+<div class="back">
+<a href="history.html">
+<button>← Back</button>
+</a>
+</div>
+
+<div class="container">
+
+<h1>CivicConnect</h1>
+<h3>Complaint Submission Form</h3>
+
+<form onsubmit="submitComplaint(event)">
+
+<label>Complaint ID</label>
+<input type="text" id="complaintId" readonly>
+
+<label>Complaint Title</label>
+<input type="text" id="title" required>
+
+<label>Category</label>
+<select id="category" required>
+    <option value="">Select Category</option>
+    <option>Road Damage</option>
+    <option>Garbage Issue</option>
+    <option>Water Leakage</option>
+    <option>Drainage Problem</option>
+    <option>Street Light Failure</option>
+    <option>Public Safety</option>
+</select>
+
+<label>Description</label>
+<textarea id="description" required></textarea>
+
+<label>Location</label>
+<input type="text" id="location" required>
+
+<label>Date</label>
+<input type="date" id="date" required>
+
+<label>Upload Photo</label>
+<input type="file" id="photo" accept="image/*">
+
+<button type="submit" class="submit-btn">
+Submit Complaint
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+/* Generate ID */
+let generatedId = "CIV-" + Date.now();
+document.getElementById("complaintId").value = generatedId;
+
+/* Set Date */
+document.getElementById("date").value =
+new Date().toISOString().split('T')[0];
+
+function submitComplaint(e){
+e.preventDefault();
+
+let file = document.getElementById("photo").files[0];
+
+let complaint = {
+
+    complaintId: generatedId,   // FIXED KEY (IMPORTANT)
+    user: localStorage.getItem("currentUser"),
+    title: document.getElementById("title").value,
+    category: document.getElementById("category").value,
+    description: document.getElementById("description").value,
+    location: document.getElementById("location").value,
+    date: document.getElementById("date").value,
+    status: "Submitted",
+    remarks: "",
+    image: ""
+
+};
+
+/* Save function */
+function saveData(){
+
+    let complaints =
+    JSON.parse(localStorage.getItem("complaints")) || [];
+
+    complaints.push(complaint);
+
+    localStorage.setItem("complaints", JSON.stringify(complaints));
+
+    localStorage.setItem("complaint", JSON.stringify(complaint));
+
+    alert("Complaint Submitted Successfully");
+
+    window.location.href = "track.html";
+}
+
+if(file){
+
+    let reader = new FileReader();
+
+    reader.onload = function(){
+        complaint.image = reader.result;
+        saveData();
+    };
+
+    reader.readAsDataURL(file);
+
+}
+else{
+    saveData();
+}
+
+}
+
+</script>
+
+</body>
+</html>

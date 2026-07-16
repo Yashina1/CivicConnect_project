@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Authority Portal - CivicConnect</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f4c81;
+    color:white;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.navbar .title{
+    font-weight:600;
+    cursor:pointer;
+}
+
+.navbar .back{
+    cursor:pointer;
+    font-size:13px;
+}
+
+/* LAYOUT */
+.container{
+    max-width:1200px;
+    margin:30px auto;
+    display:flex;
+    gap:20px;
+    padding:0 20px;
+}
+
+/* LEFT CARD */
+.card{
+    flex:2;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* RIGHT SIDE */
+.right{
+    flex:1;
+}
+
+/* PANELS */
+.panel{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* TEXT */
+h2{
+    color:#0f4c81;
+}
+
+.label{
+    font-size:12px;
+    color:#777;
+    margin-top:12px;
+}
+
+.value{
+    font-size:14px;
+    margin-top:3px;
+}
+
+/* IMAGE */
+img{
+    width:250px;
+    height:200px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+/* SELECT */
+.select-box select,
+#remarkSelect{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:14px;
+    margin-top:8px;
+}
+
+/* TEXTAREA */
+textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:13px;
+    height:80px;
+    resize:none;
+}
+
+/* BUTTONS */
+.btn{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.save{
+    background:#0f4c81;
+    color:white;
+}
+
+.backBtn{
+    background:#6c757d;
+    color:white;
+}
+
+/* STATUS BADGES */
+.badge{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    margin-top:8px;
+}
+
+.review{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.progress{
+    background:#cce5ff;
+    color:#004085;
+}
+
+.resolved{
+    background:#d4edda;
+    color:#155724;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="title" onclick="goDashboard()">
+        🏛️ CivicConnect Authority Portal
+    </div>
+
+    <div class="back" onclick="goBack()">
+        ← Dashboard
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="card" id="details"></div>
+
+    <!-- RIGHT -->
+    <div class="right">
+
+        <!-- DEPARTMENT -->
+        <div class="panel">
+            <h3>🏢 Assign Department</h3>
+
+            <div class="select-box">
+                <select id="deptSelect">
+                    <option value="" disabled selected>
+                        -- Select Department --
+                    </option>
+
+                    <option value="Road Damage">Road Damage</option>
+                    <option value="Garbage Management">Garbage Management</option>
+                    <option value="Water Leakage">Water Leakage</option>
+                    <option value="Drainage">Drainage</option>
+                    <option value="Street Light">Street Light</option>
+                    <option value="Public Safety">Public Safety</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="panel">
+            <h3>📊 Status Update</h3>
+
+            <div class="select-box">
+                <select id="statusSelect">
+                    <option value="" disabled selected>
+                        -- Select Status --
+                    </option>
+
+                    <option value="Under Review">Under Review</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- REMARKS -->
+        <div class="panel">
+            <h3>📝 Remarks</h3>
+
+            <select id="remarkSelect">
+                <option value="">Quick Remark</option>
+                <option>Site inspection completed</option>
+                <option>Work assigned to contractor</option>
+                <option>Material requested</option>
+                <option>Work in progress</option>
+                <option>Resolved successfully</option>
+            </select>
+
+            <textarea
+                id="customRemark"
+                placeholder="Additional remarks..."
+            ></textarea>
+        </div>
+
+        <!-- ACTION -->
+        <div class="panel">
+            <button class="btn save" onclick="save()">
+                Save Updates
+            </button>
+
+            <button class="btn backBtn" onclick="goBack()">
+                Back
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let index = localStorage.getItem("selectedIndex");
+
+let complaints =
+    JSON.parse(localStorage.getItem("complaints")) || [];
+
+let c = complaints[index];
+
+/* PREFILL */
+setTimeout(() => {
+
+    if(c && c.department){
+        document.getElementById("deptSelect").value =
+            c.department;
+    }
+
+    if(c && c.status){
+        document.getElementById("statusSelect").value =
+            c.status;
+    }
+
+},100);
+
+/* RENDER DETAILS */
+function render(){
+
+    if(!c){
+        document.getElementById("details").innerHTML =
+        "<h2>No Complaint Found</h2>";
+        return;
+    }
+
+    document.getElementById("details").innerHTML = `
+
+        <h2>${c.title || "Complaint"}</h2>
+
+        <div class="label">Category</div>
+        <div class="value">${c.category || "-"}</div>
+
+        <div class="label">Description</div>
+        <div class="value">${c.description || "-"}</div>
+
+        <div class="label">Location</div>
+        <div class="value">${c.location || "-"}</div>
+
+        <div class="label">Date</div>
+        <div class="value">${c.date || "-"}</div>
+
+        <div class="label">Status</div>
+
+        <div class="badge ${
+            c.status === "Resolved"
+            ? "resolved"
+            : c.status === "In Progress"
+            ? "progress"
+            : "review"
+        }">
+            ${c.status || "Under Review"}
+        </div>
+
+        <div class="label">Citizen Image</div>
+
+        ${
+            c.image
+            ? `<img src="${c.image}" alt="Complaint Image">`
+            : `<div class="value">No image uploaded</div>`
+        }
+
+    `;
+}
+
+/* SAVE */
+function save(){
+
+    let dept =
+        document.getElementById("deptSelect").value;
+
+    let status =
+        document.getElementById("statusSelect").value;
+
+    let remark =
+        document.getElementById("remarkSelect").value;
+
+    let custom =
+        document.getElementById("customRemark").value;
+
+    if(!dept || !status){
+        alert("Please select Department and Status");
+        return;
+    }
+
+    let finalRemark = remark;
+
+    if(custom){
+        finalRemark = finalRemark
+            ? finalRemark + " | " + custom
+            : custom;
+    }
+
+    complaints[index].department = dept;
+    complaints[index].status = status;
+    complaints[index].remarks = finalRemark;
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(complaints)
+    );
+
+    alert("Complaint Updated Successfully");
+
+    /* Redirect to Summary Page */
+    window.location.href = "summary.html";
+}
+
+/* BACK BUTTON */
+function goBack(){
+    window.location.href = "authority_dashboard.html";
+}
+
+/* TOP TITLE CLICK */
+function goDashboard(){
+    window.location.href = "summary.html";
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+
